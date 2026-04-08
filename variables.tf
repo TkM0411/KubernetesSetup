@@ -20,3 +20,15 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/24"
   description = "VPC CIDR"
 }
+
+variable "droplet_size" {
+  type        = string
+  default     = "s-2vcpu-2gb"
+  description = "Size of the VM"
+}
+
+variable "droplet_image" {
+  type        = string
+  default     = "ubuntu-25-10-x64"
+  description = "Machine Image of the VM"
+}

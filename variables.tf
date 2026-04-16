@@ -41,3 +41,15 @@ variable "ami_project_name" {
   description = "Name of the Project for fetching the correct AMI"
   default     = "k8nsetup"
 }
+
+variable "ec2_instance_type" {
+  type = string
+  description = "Type of EC2 Instances"
+  default = "t3.medium"
+}
+
+variable "default_availability_zone" {
+  type = string
+  description = "Default Availability Zone"
+  default = "ap-south-2a"
+}

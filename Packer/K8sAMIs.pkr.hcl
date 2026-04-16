@@ -61,6 +61,14 @@ source "amazon-ebs" "ubuntu-base-ami" {
     most_recent = true
     owners      = ["099720109477"]
   }
+  launch_block_device_mappings {
+    device_name = "/dev/sda1"
+    volume_size = 32
+    volume_type = "gp3"
+
+    delete_on_termination = true
+    encrypted             = true
+  }
   encrypt_boot         = true
   ssh_username         = "ubuntu"
   iam_instance_profile = var.iam_instance_profile

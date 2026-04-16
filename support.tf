@@ -69,3 +69,16 @@ resource "aws_iam_instance_profile" "kubernetes_node_instance_profile" {
     Name = "EC2 Instance Profile for ${var.project_name} EC2 Nodes"
   }, local.common_tags)
 }
+
+resource "tls_private_key" "ec2_private_key" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+resource "aws_key_pair" "ec2_key_pair" {
+  key_name   = "${local.project_code}-ssh-keypair"
+  public_key = trimspace(tls_private_key.ec2_private_key.public_key_openssh)
+  tags = merge({
+    Name = "KubernetesSSHKeyPair"
+  }, local.common_tags)
+}

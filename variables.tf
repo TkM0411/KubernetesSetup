@@ -25,3 +25,13 @@ variable "owner" {
   description = "Name of the Resource Owner"
   default     = "TkM"
 }
+
+variable "aws_managed_policies" {
+  type        = list(string)
+  description = "List of AWS Managed IAM Policies"
+  default = [
+    "AmazonSSMManagedEC2InstanceDefaultPolicy",
+    "AmazonSSMManagedInstanceCore",
+    "AmazonSSMFullAccess"
+  ]
+}

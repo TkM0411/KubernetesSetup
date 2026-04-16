@@ -1,7 +1,8 @@
 locals {
   project_code = lower(var.project_name)
-  common_tags = [
-    "Project: ${var.project_name}",
-    "CreatedOn: ${formatdate("YYYY-MM-DD", timestamp())}"
-  ]
+  common_tags = {
+    Owner       = "${var.owner}"
+    CreatedDate = "${formatdate("DD-MM-YYYY", timestamp())}"
+    Project     = "${var.project_name}"
+  }
 }

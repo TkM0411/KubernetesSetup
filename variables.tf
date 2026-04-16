@@ -1,34 +1,27 @@
-variable "do_token" {
+variable "access_key" {
   type        = string
-  description = "DigitalOcean Token"
+  description = "AWS Access Key"
 }
 
-variable "region" {
+variable "secret_key" {
   type        = string
-  default     = "blr1"
-  description = "Region where infra is created"
+  description = "AWS Secret Key"
+}
+
+variable "aws_region" {
+  type        = string
+  description = "AWS Region"
+  default     = "ap-south-2"
 }
 
 variable "project_name" {
   type        = string
-  default     = "Kubernetes"
   description = "Name of the Project"
+  default     = "Kubernetes"
 }
 
-variable "vpc_cidr" {
+variable "owner" {
   type        = string
-  default     = "10.0.0.0/24"
-  description = "VPC CIDR"
-}
-
-variable "droplet_size" {
-  type        = string
-  default     = "s-2vcpu-2gb"
-  description = "Size of the VM"
-}
-
-variable "droplet_image" {
-  type        = string
-  default     = "ubuntu-25-10-x64"
-  description = "Machine Image of the VM"
+  description = "Name of the Resource Owner"
+  default     = "TkM"
 }

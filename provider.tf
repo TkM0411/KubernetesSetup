@@ -1,16 +1,12 @@
 terraform {
-  required_version = ">= 0.12"
-
-  required_providers {
-    digitalocean = {
-      source  = "digitalocean/digitalocean"
-      version = "~> 2.0"
-    }
+  backend "s3" {
+    bucket  = "tkm-tfstate"
+    key     = "KubernetesSetup/infra/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
   }
 }
 
-provider "digitalocean" {
-  token = var.do_token
+provider "aws" {
+  region = var.aws_region
 }
-
-provider "tls" {}

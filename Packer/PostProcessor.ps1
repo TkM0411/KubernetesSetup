@@ -1,5 +1,8 @@
 $json = Get-Content manifest.json | ConvertFrom-Json
-$artifact = $json.builds[0].artifact_id
+$lastRun = $json.last_run_uuid
+$artifact = ($json.builds | Where-Object {
+    $_.packer_run_uuid -eq $lastRun
+}).artifact_id
 $ami = $artifact.Split(':')[1]
 $PROJECT="k8nsetup"
 

@@ -35,3 +35,9 @@ variable "aws_managed_policies" {
     "AmazonSSMFullAccess"
   ]
 }
+
+variable "ami_project_name" {
+  type        = string
+  description = "Name of the Project for fetching the correct AMI"
+  default     = "k8nsetup"
+}

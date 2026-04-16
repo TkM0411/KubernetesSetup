@@ -18,3 +18,7 @@ data "aws_iam_policy_document" "ec2_instance_profile_trust_role" {
     actions = ["sts:AssumeRole"]
   }
 }
+
+data "aws_ssm_parameter" "kubernetes_ec2_ami" {
+  name = "/${ami_project_name}/packer/ami"
+}

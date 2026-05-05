@@ -14,6 +14,7 @@ resource "aws_instance" "kubernetes_master_node" {
 }
 
 resource "aws_instance" "kubernetes_worker_node" {
+  count                       = var.is_minikube_setup ? 0 : 1
   ami                         = data.aws_ssm_parameter.kubernetes_ec2_ami.value
   instance_type               = var.ec2_instance_type
   availability_zone           = var.default_availability_zone

@@ -43,13 +43,19 @@ variable "ami_project_name" {
 }
 
 variable "ec2_instance_type" {
-  type = string
+  type        = string
   description = "Type of EC2 Instances"
-  default = "t3.medium"
+  default     = "t3.medium"
 }
 
 variable "default_availability_zone" {
-  type = string
+  type        = string
   description = "Default Availability Zone"
-  default = "ap-south-2a"
+  default     = "ap-south-2a"
+}
+
+variable "is_minikube_setup" {
+  type        = bool
+  description = "Determines whether we need a MiniKube Setup"
+  default     = true
 }

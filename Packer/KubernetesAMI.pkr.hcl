@@ -34,33 +34,54 @@ variable "iam_instance_profile" {
   description = "IAM Instance Profile to Use for the Packer EC2"
 }
 
+variable "architecture" {
+  type        = string
+  description = "CPU Architecture"
+
+  validation {
+    condition     = contains(["amd64", "arm64"], var.architecture)
+    error_message = "Architecture must be either 'amd64' or 'arm64'."
+  }
+}
+
+data "amazon-ami" "ubuntu" {
+  filters = {
+    name                = "ubuntu/images/hvm-ssd-gp3/ubuntu-*-*-${var.architecture}-server-*"
+    root-device-type    = "ebs"
+    virtualization-type = "hvm"
+  }
+  region      = var.aws_region
+  most_recent = true
+  owners      = ["099720109477"] # Canonical
+}
+
 locals {
   timestamp    = regex_replace(timestamp(), "[- TZ:]", "")
   project_code = lower(var.project_name)
+  arch_type = {
+    "arm64" = "Gravitron"
+    "amd64" = "x64"
+  }
+  ubuntu_version = regex(".*ubuntu-[a-z]+-([0-9]+\\.[0-9]+)-.*", data.amazon-ami.ubuntu.name)[0]
   common_tags = {
-    "CreatedBy"         = "TkM Packer"
-    "KubernetesVersion" = "v1.34"
+    "CreatedBy"          = "TkM Packer"
+    "Kubernetes Version" = "v1.34"
   }
   dynamic_tags = {
-    "Name"            = "${var.project_name} AMI"
+    "Name"            = "Kubernetes AMI (${local.arch_type[var.architecture]})"
     "Created On Date" = formatdate("DD-MMM-YYYY", timeadd(timestamp(), "5h30m"))
-    "Purpose"         = "Kubernetes Custom AMI"
+    "Purpose"         = "Kubernetes AMI"
+    "Platform"        = "${local.arch_type[var.architecture]}"
+    "Architecture"    = "${var.architecture}"
+    "Ubuntu Version"  = "${local.ubuntu_version}"
   }
 }
 
 source "amazon-ebs" "ubuntu-base-ami" {
-  ami_name      = "${local.project_code}-${local.timestamp}"
-  instance_type = "t3.medium"
+  ami_name      = "kubernetes-${var.architecture}-${local.timestamp}"
+  instance_type = lower(var.architecture) == "amd64" ? "t3.medium" : "t4g.medium"
   region        = var.aws_region
-  source_ami_filter {
-    filters = {
-      name                = "ubuntu/images/*ubuntu-noble-24.04-amd64-server-*"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
-    }
-    most_recent = true
-    owners      = ["099720109477"]
-  }
+  source_ami    = data.amazon-ami.ubuntu.id
   launch_block_device_mappings {
     device_name = "/dev/sda1"
     volume_size = 32

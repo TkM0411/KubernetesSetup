@@ -34,3 +34,6 @@ echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https:/
 sudo apt-get update -y
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${CPU_TYPE}
+sudo install minikube-linux-${CPU_TYPE} /usr/local/bin/minikube
+rm minikube-linux-${CPU_TYPE}

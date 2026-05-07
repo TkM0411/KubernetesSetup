@@ -45,7 +45,7 @@ variable "ami_project_name" {
 variable "ec2_instance_type" {
   type        = string
   description = "Type of EC2 Instances"
-  default     = "t3.medium"
+  default     = "medium"
 }
 
 variable "default_availability_zone" {
@@ -58,4 +58,14 @@ variable "is_minikube_setup" {
   type        = bool
   description = "Determines whether we need a MiniKube Setup"
   default     = true
+}
+
+variable "architecture" {
+  type        = string
+  description = "CPU Architecture"
+
+  validation {
+    condition     = contains(["amd64", "arm64"], var.architecture)
+    error_message = "Architecture must be either 'amd64' or 'arm64'."
+  }
 }

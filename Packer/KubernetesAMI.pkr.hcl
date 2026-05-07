@@ -108,6 +108,11 @@ build {
 
   post-processor "manifest" {
     output = "manifest.json"
+    custom_data = {
+      region         = var.aws_region
+      architecture   = var.architecture
+      ubuntu_version = local.ubuntu_version
+    }
   }
 
   post-processor "shell-local" {
